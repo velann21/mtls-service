@@ -1,0 +1,15 @@
+FROM golang:latest AS builder
+WORKDIR /app/backend
+ADD . /app/backend
+RUN go mod download
+RUN go mod vendor
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o /server /app/backend/server/server.go
+
+
+# final stage
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+COPY --from=builder /server ./
+RUN chmod +x ./server
+ENTRYPOINT ["./server"]
+EXPOSE 8001
