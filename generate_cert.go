@@ -82,9 +82,9 @@ func main() {
 		log.Fatalf("Failed to create certificate: %s", err)
 	}
 	out := &bytes.Buffer{}
-	pem.Encode(out, &pem.Block{Type: "CERTIFICATE", Bytes: derBytes})
+	_ = pem.Encode(out, &pem.Block{Type: "CERTIFICATE", Bytes: derBytes})
 	fmt.Println(out.String())
 	out.Reset()
-	pem.Encode(out, pemBlockForKey(priv))
+	_ = pem.Encode(out, pemBlockForKey(priv))
 	fmt.Println(out.String())
 }
