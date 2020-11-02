@@ -11,6 +11,7 @@ import (
 	"log"
 	"math/big"
 	"net"
+	"os"
 	"time"
 )
 
@@ -111,6 +112,19 @@ func main() {
 	pemKey, privateKey  := EncodeCertPEMEncoded(rootCACert, caKey)
 	fmt.Println("PEM key",string(pemKey))
 	fmt.Println("Private Key", string(privateKey))
+
+	file, err := os.Create("./ca.crt")
+	if err != nil{
+		log.Fatalln(err)
+	}
+
+	_, _ = file.Write(pemKey)
+	file2, err := os.Create("./ca.key")
+	if err != nil{
+		log.Fatalln(err)
+	}
+
+	_, _ = file2.Write(privateKey)
 }
 
 
